@@ -20,6 +20,8 @@ public class MyLinkedListTester {
 
 	MyLinkedList<String> shortList;
 	MyLinkedList<Integer> emptyList;
+	MyLinkedList<Integer> emptyList1;
+	MyLinkedList<Integer> emptyListNew;
 	MyLinkedList<Integer> longerList;
 	MyLinkedList<Integer> list1;
 	
@@ -32,7 +34,10 @@ public class MyLinkedListTester {
 	    shortList = new MyLinkedList<String>();
 		shortList.add("A");
 		shortList.add("B");
+		
 		emptyList = new MyLinkedList<Integer>();
+		emptyList1 = new MyLinkedList<Integer>();
+		emptyListNew = new MyLinkedList<Integer>();
 		longerList = new MyLinkedList<Integer>();
 		for (int i = 0; i < LONG_LIST_LENGTH; i++)
 		{
@@ -81,8 +86,11 @@ public class MyLinkedListTester {
 		
 		}
 		// test longer list contents
+		//assertEquals("Check 3 element",(Integer)9, longerList.get(9));
+		//assertEquals("Check second", "B", shortList.get(0));
+		
 		for(int i = 0; i<LONG_LIST_LENGTH; i++ ) {
-			assertEquals("Check "+i+ " element", (Integer)i, longerList.get(i));
+		assertEquals("Check "+i+ " element", (Integer)i, longerList.get(i));
 		}
 		
 		// test off the end of the longer array
@@ -114,6 +122,19 @@ public class MyLinkedListTester {
 		assertEquals("Remove: check element 0 is correct ", (Integer)21, list1.get(0));
 		assertEquals("Remove: check size is correct ", 2, list1.size());
 		
+		try {
+			 emptyList.remove(-1);
+			 fail("Check IndexOutOfBounds Exception");
+			}
+			catch (IndexOutOfBoundsException e) {
+					}
+		try {
+			 emptyList.remove(34);
+			 fail("Check IndexOutOfBounds Exception");
+			}
+			catch (IndexOutOfBoundsException e) {
+					}
+		
 		// TODO: Add more tests here
 	}
 	
@@ -124,6 +145,32 @@ public class MyLinkedListTester {
 	public void testAddEnd()
 	{
         // TODO: implement this test
+		//checking for adding null values in an empty list
+		try {
+			emptyList.add(null);
+			fail("Check null Pointer Exception");
+		}
+		catch (NullPointerException e) {
+			
+		}
+		//checking for adding null values in a list of elements
+		try {
+			list1.add(null);
+			fail("Check null Pointer Exception");
+			}
+		catch (NullPointerException e) {
+				}
+		//checking for adding element at last in a list of elements
+		boolean a =longerList.add(30);
+		assertEquals("add: check a is correct ", true, a);
+		assertEquals("add: check element 10 is correct ", (Integer)30, longerList.get(10));
+		assertEquals("add: check size is correct ", 11, longerList.size());
+		
+		//checking for adding element at last in an empty list
+		boolean a1 =emptyList.add(3);
+		assertEquals("add: check a1 is correct ", true, a1);
+		assertEquals("add: check element 0 is correct ", (Integer)3, emptyList.get(0));
+		assertEquals("add: check size is correct ", 1, emptyList.size());
 		
 	}
 
@@ -133,6 +180,12 @@ public class MyLinkedListTester {
 	public void testSize()
 	{
 		// TODO: implement this test
+		longerList.add(2,70);
+		assertEquals("add: check size is correct ", 11, longerList.size());
+		boolean a1 =emptyList.add(13);
+		assertEquals("add: check size is correct ", 1, emptyList.size());
+		emptyList1 = new MyLinkedList<Integer>();
+		assertEquals("check size is correct ", 0, emptyList1.size());
 	}
 
 	
@@ -145,7 +198,51 @@ public class MyLinkedListTester {
 	public void testAddAtIndex()
 	{
         // TODO: implement this test
+		//checking for adding null values in an empty list at a certain index.
+		try {
+			emptyListNew.add(1,null);
+			fail("Check null Pointer Exception and IndexOutOfBoundsException");
+		}
+		catch (NullPointerException e) {
+			
+		}
+        catch (IndexOutOfBoundsException e1) {
+			
+		}
 		
+		//checking for adding null values in a list of elements
+		try {
+			list1.add(2,null);
+			fail("Check null Pointer Exception");
+			}
+		catch (NullPointerException e) {
+				}
+		
+		//checking for adding values in an list at an inappropriate index.
+		try {
+			 emptyList.add(11,20);
+			 fail("Check IndexOutOfBounds Exception");
+			}
+			catch (IndexOutOfBoundsException e) {
+					}
+		
+		//checking for adding values in an list at an inappropriate index.
+		try {
+			list1.add(-2,78);
+			fail("Check IndexOutOfBounds Exception");
+					}
+			catch (IndexOutOfBoundsException e) {
+						}
+		
+		//checking for adding element at certain index in a list of elements
+				longerList.add(2,90);
+				assertEquals("add: check element added at position 2 is correct ", (Integer)90, longerList.get(2));
+				assertEquals("add: check size is correct ", 11, longerList.size());
+				
+				//checking for adding element at last in an empty list
+				emptyListNew.add(0,55);
+				assertEquals("add: check element added at position 0 is correct ", (Integer)55, emptyListNew.get(0));
+				assertEquals("add: check size is correct ", 1, emptyListNew.size());
 	}
 	
 	/** Test setting an element in the list */
@@ -153,7 +250,47 @@ public class MyLinkedListTester {
 	public void testSet()
 	{
 	    // TODO: implement this test
-	    
+		try {
+			emptyListNew.set(1,null);
+			fail("Check null Pointer Exception and IndexOutOfBoundsException");
+		}
+		catch (NullPointerException e) {
+			
+		}
+        catch (IndexOutOfBoundsException e1) {
+			
+		}
+		
+		//checking for adding null values in a list of elements
+		try {
+			list1.set(2,null);
+			fail("Check null Pointer Exception");
+			}
+		catch (NullPointerException e) {
+				}
+		
+		//checking for adding values in an list at an inappropriate index.
+		try {
+			 emptyList.set(11,20);
+			 fail("Check IndexOutOfBounds Exception");
+			}
+			catch (IndexOutOfBoundsException e) {
+					}
+		
+		//checking for adding values in an list at an inappropriate index.
+		try {
+			list1.set(-2,78);
+			fail("Check IndexOutOfBounds Exception");
+					}
+			catch (IndexOutOfBoundsException e) {
+						}
+		
+		//checking for adding element at last in a list of elements
+				int a =longerList.set(2,12);
+				assertEquals("set: check a is correct ", 2, a);
+				assertEquals("set: check element 2 is correct ", (Integer)12, longerList.get(2));
+				assertEquals("set: check size is correct ", 10, longerList.size());
+				
 	}
 	
 	
