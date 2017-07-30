@@ -12,7 +12,7 @@ import java.util.List;
  * WPTree implements WordPath by dynamically creating a tree of words during a Breadth First
  * Search of Nearby words to create a path between two words. 
  * 
- * @author UC San Diego Intermediate MOOC team
+ * @author gowri
  *
  */
 public class WPTree implements WordPath {
@@ -27,9 +27,10 @@ public class WPTree implements WordPath {
 	public WPTree () {
 		this.root = null;
 		// TODO initialize a NearbyWords object
-		// Dictionary d = new DictionaryHashSet();
-		// DictionaryLoader.loadDictionary(d, "data/dict.txt");
-		// this.nw = new NearbyWords(d);
+		Dictionary d = new DictionaryHashSet();
+		DictionaryLoader.loadDictionary(d, "data/dict.txt");
+		this.nw = new NearbyWords(d);
+		//this.nw = new NearbyWords();
 	}
 	
 	//This constructor will be used by the grader code
@@ -41,8 +42,31 @@ public class WPTree implements WordPath {
 	// see method description in WordPath interface
 	public List<String> findPath(String word1, String word2) 
 	{
+		List<WPTreeNode> Queue = new LinkedList<WPTreeNode>();
+		HashSet<String> visited = new HashSet<String>();
+		
+		root = new WPTreeNode(word1,null);
+		visited.add(word1);
+		Queue.add(root);
 	    // TODO: Implement this method.
-	    return new LinkedList<String>();
+		// curr=Queue.get(0);
+		
+		while(!Queue.isEmpty() && !visited.contains(word2)){
+			WPTreeNode curr = Queue.remove(0);
+		List<String> neighbors = nw.distanceOne(curr.getWord(), true);
+		for(String sw: neighbors){
+			if(!visited.contains(sw)){
+				WPTreeNode next=curr.addChild(sw);
+				visited.add(sw);
+				Queue.add(next);
+				if(sw.equals(word2)){
+					return next.buildPathToRoot();
+				}
+			}
+		}
+		
+		}
+	    return null;
 	}
 	
 	// Method to print a list of WPTreeNodes (useful for debugging)
