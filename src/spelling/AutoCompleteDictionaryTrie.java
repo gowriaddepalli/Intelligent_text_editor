@@ -15,7 +15,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 
     private TrieNode root;
     private int size;
-    
+    private int count;
 
     public AutoCompleteDictionaryTrie()
 	{
@@ -40,7 +40,32 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		String word1=word.toLowerCase();
+		char p[] = word1.toCharArray();
+		boolean flag = false;
+		TrieNode curr = root;
+		//System.out.println("^^^");
+		//System.out.println(curr.getText());
+		TrieNode next = null;
+		//System.out.println("######");
+		//System.out.println(word1);
+		if(isWord(word1)){
+			flag=false;
+			//System.out.println("$$");
+			//System.out.println(word1);
+		}else{
+		for (Character c : p){
+			next=curr.getChild(c);
+			if(next==null){
+				next = curr.insert(c);
+				flag = true;
+			}
+			//System.out.println(next.getText());
+			curr = next; 
+		}
+		curr.setEndsWord(true);
+		count++;}
+	    return flag;
 	}
 	
 	/** 
@@ -49,8 +74,35 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public int size()
 	{
-	    //TODO: Implement this method
-	    return 0;
+	    //TODO: Implement this method 
+		/*
+		TrieNode curr = root;
+		TrieNode next = null;
+		int count=0;
+		System.out.println(curr.getValidNextCharacters());
+		for (Character c : curr.getValidNextCharacters()) {
+			System.out.println(curr.getValidNextCharacters());
+			System.out.println("(((");
+			System.out.println(c);
+ 			next=curr.getChild(c);
+ 			if(next==null){
+ 				System.out.println("++");
+ 				break;
+ 			}
+ 			if(next!=null && next.endsWord()){
+ 				count++;
+ 				System.out.println(count);
+ 			}	
+ 			System.out.println("$$");
+ 			System.out.println(curr.getText());
+ 			System.out.println(next.getText());
+ 			System.out.println(next.endsWord());
+ 			curr=next;
+		}
+		
+	   return count;
+	   */
+         return count;
 	}
 	
 	
@@ -60,7 +112,30 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+		TrieNode curr = root;
+		//System.out.println(curr.getText());
+		String word1 = s.toLowerCase();
+		boolean flag = false;
+		if(!word1.isEmpty()){
+		char p[] = word1.toCharArray();
+		for(Character c: p){
+			TrieNode next = curr.getChild(c);
+			if(next == null){
+				flag = true;
+				break;
+			}
+			if(!next.endsWord()){
+				flag=true;
+			}else{
+				flag=false;
+			}
+			//System.out.println(next.getText());
+			curr=next;
+		}
+		}else{
+			flag =true;
+		}
+		return !flag;
 	}
 
 	/** 
@@ -101,7 +176,59 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
     	 
-         return null;
+    	 String prefix1 = prefix.toLowerCase();
+ 		 boolean flag = false;
+    	 TrieNode curr =root;
+    	 LinkedList<TrieNode> predictWords=new LinkedList<TrieNode>();  
+    	 LinkedList<String> completions=new LinkedList<String>(); 
+    		 char p[] = prefix1.toCharArray();
+    			for(Character c: p){
+    				TrieNode next = curr.getChild(c);
+    				if(next == null){
+    					flag = true;
+    					return completions;
+    				}
+    				//System.out.println(next.getText());
+    				curr=next;
+    			}
+    		if(curr.endsWord()){
+    			predictWords.add(curr);
+    		}
+    		Set<Character> s = curr.getValidNextCharacters();
+    		for(char c:s)
+ 			{ 
+    		TrieNode move =curr.getChild(c);
+    		if(move==null){
+    			break;
+    		}
+    		predictWords.add(move);
+    		
+ 			//curr =move;
+ 			//System.out.println(q.size() + "!!@");
+ 			} 
+    		
+    		while(!predictWords.isEmpty() && (completions.size()!=numCompletions)){
+    			{
+    				TrieNode sw = predictWords.remove();
+    				if(sw.endsWord()){
+    				completions.add(sw.getText());
+    				}
+    				
+    				Set<Character> sm = sw.getValidNextCharacters();
+    	    		for(char c:sm)
+    	 			{ 
+    	    		TrieNode move1 =sw.getChild(c);
+    	    		if(move1==null){
+    	    			break;
+    	    		}
+    	    		predictWords.add(move1);
+    	 			}
+    	    		
+    			}
+ 
+    		}
+    	 
+         return completions;
      }
 
  	// For debugging
@@ -124,6 +251,8 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
  			printNode(next);
  		}
  	}
+ 	
+ 	
  	
 
 	

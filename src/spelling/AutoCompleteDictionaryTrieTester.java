@@ -36,13 +36,13 @@ public class AutoCompleteDictionaryTrieTester {
 		smallDict.addWord("Hello");
 		smallDict.addWord("HElLo");
 		smallDict.addWord("help");
+		smallDict.addWord("help");
 		smallDict.addWord("he");
 		smallDict.addWord("hem");
 		smallDict.addWord("hot");
 		smallDict.addWord("hey");
 		smallDict.addWord("a");
 		smallDict.addWord("subsequent");
-		
 		DictionaryLoader.loadDictionary(largeDict, dictFile);
 	}
 
@@ -55,6 +55,7 @@ public class AutoCompleteDictionaryTrieTester {
 		assertEquals("Testing size for empty dict", 0, emptyDict.size());
 		assertEquals("Testing size for small dict", 8, smallDict.size());
 		assertEquals("Testing size for large dict", 4438, largeDict.size());
+		assertEquals("Testing size for small dictwith duplicate words", 8,smallDict.size());
 	}
 	
 	/** Test the isWord method */
@@ -89,7 +90,7 @@ public class AutoCompleteDictionaryTrieTester {
 	public void testAddWord()
 	{
 		
-		
+	
 		assertEquals("Asserting hellow is not in empty dict", false, emptyDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in small dict", false, smallDict.isWord("hellow"));
 		assertEquals("Asserting hellow is not in large dict", false, largeDict.isWord("hellow"));
@@ -135,7 +136,7 @@ public class AutoCompleteDictionaryTrieTester {
 		List<String> completions;
 		completions = smallDict.predictCompletions("", 0);
 		assertEquals(0, completions.size());
-		
+	
 		completions = smallDict.predictCompletions("",  4);
 		assertEquals(4, completions.size());
 		assertTrue(completions.contains("a"));
@@ -157,7 +158,7 @@ public class AutoCompleteDictionaryTrieTester {
 		assertTrue(allIn);
 	
 		completions = smallDict.predictCompletions("x", 5);
-		assertEquals(0, completions.size());
+		assertEquals(0, completions.size());         
 	}
 	
 	
